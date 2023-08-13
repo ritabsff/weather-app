@@ -1,0 +1,78 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+ul {
+  display: block;
+  list-style: none;
+  padding: 0;
+}
+
+.container {
+  display: block;
+  margin: 0 auto;
+  max-width: 600px;
+  min-width: 300px;
+}
+
+.weather-today,
+.city-chosen {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.city-chosen {
+  text-transform: capitalize;
+}
+
+.max-temp {
+  font-weight: 700;
+}
+
+.weather-emoji {
+  width: 30px;
+}
+
+.temp-units {
+  position: relative;
+  bottom: 16px;
+}
+.celsius-unit,
+.fahrenheit-unit {
+  color: #2b80f0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.celsius-unit:hover,
+.fahrenheit-unit:hover {
+  text-decoration: underline;
+  color: #0055c4;
+  transition: all 150ms ease-in-out;
+  cursor: pointer;
+}
+
+.weather-today-list,
+.date-today,
+.temp-unit-space {
+  font-size: 16px;
+  font-weight: 200;
+}
+
+.date-today {
+  padding: 0 15px;
+}
+
+.weather-next {
+  font-size: 12px;
+  text-align: center;
+}
+
+.weather-emoji-card {
+  border: none;
+  width: 40px;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid grey;
+  padding: 3px;
+  border-radius: 50%;
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Weather app</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles/weather.css" />
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card border-dark mt-5">
+        <div class="card-body">
+          <form id="city-search-form">
+            <div class="form-row">
+              <div class="col">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="city-input"
+                  autocomplete="off"
+                  placeholder="Search for a new city"
+                />
+              </div>
+              <div class="col-auto">
+                <button
+                  type="submit"
+                  class="btn btn-primary col"
+                  id="search-city-button"
+                >
+                  Search
+                </button>
+              </div>
+              <div class="col-auto">
+                <button
+                  type="button"
+                  class="btn btn-success col"
+                  id="current-city-button"
+                >
+                  Current location
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="row mt-3">
+            <div class="col weather-today">
+              <img
+                src="images/sun-symbol.svg"
+                alt="sunny"
+                class="weather-emoji"
+              />
+              <span id="temperature-today">10</span>
+              <span class="temp-units">
+                <span class="celsius-unit" id="temp-c">°C</span
+                ><span class="temp-unit-space"> | </span
+                ><span class="fahrenheit-unit" id="temp-f">°F</span>
+              </span>
+              <ul class="weather-today-list">
+                <li>
+                  <span class="max-temp" id="max-temp">21°C</span> |
+                  <span id="min-temp">14°C</span>
+                </li>
+                <li>Humidity: <span id="humidity">75%</span></li>
+                <li>Wind: <span id="wind-speed">19 km/h</span></li>
+              </ul>
+            </div>
+            <div>
+              <div class="col-md-auto city-chosen" id="chosen-city">
+                Amsterdam
+              </div>
+              <div class="date-today" id="date-today">date today</div>
+            </div>
+          </div>
+
+          <br />
+          <div class="row weather-next">
+            <div class="col">
+              Tue <br />
+              <div class="card weather-emoji-card">
+                <img src="images/sun-behind-large-cloud.svg" alt="cloudy" />
+              </div>
+              <strong>22°C</strong> | 14°C
+            </div>
+            <div class="col">
+              Wed
+              <div class="card weather-emoji-card">
+                <img src="images/cloud.svg" alt="cloudy" />
+              </div>
+              <strong>21°C</strong> | 13°C
+            </div>
+            <div class="col">
+              Thu
+              <div class="card weather-emoji-card">
+                <img src="images/sun-behind-rain-cloud.svg" alt="rainy" />
+              </div>
+              <strong>21°C</strong> | 13°C
+            </div>
+            <div class="col">
+              Fri
+              <div class="card weather-emoji-card">
+                <img src="images/cloud-with-rain.svg" alt="cloud and rain" />
+              </div>
+              <strong>20°C</strong> | 13°C
+            </div>
+            <div class="col">
+              Sat
+              <div class="card weather-emoji-card">
+                <img src="images/sun-symbol.svg" alt="sunny" />
+              </div>
+              <strong>22°C</strong> | 16°C
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/weather.js"></script>
+  </body>
+</html>
