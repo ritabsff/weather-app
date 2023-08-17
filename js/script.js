@@ -27,10 +27,9 @@ function formatTodaysDate() {
 //Search for a specific city
 function searchForCity(event) {
   event.preventDefault();
-  let newCity = document.querySelector("#city-input");
-  document.querySelector("#chosen-city").innerHTML = newCity.value;
+  let city = document.querySelector("#city-input").value;
   let unit = "metric";
-  let apiUrlTempCurrentCity = getUrl(unit);
+  let apiUrlTempCurrentCity = getUrl(unit, city);
   axios
     .get(apiUrlTempCurrentCity)
     .then(changeTempUnitToC)
@@ -39,11 +38,9 @@ function searchForCity(event) {
 
 //See current city (and temperature)
 function showCurrentCity(response) {
-  let currentCity = response.data[0].name;
-  document.querySelector("#chosen-city").innerHTML = currentCity;
-
+  let city = response.data[0].name;
   let unit = "metric";
-  let apiUrlTempCurrentCity = getUrl(unit);
+  let apiUrlTempCurrentCity = getUrl(unit, city);
   axios
     .get(apiUrlTempCurrentCity)
     .then(changeTempUnitToC)
@@ -79,7 +76,6 @@ function changeTempUnitToC(response) {
   changeTempUnit(`C`, response);
 
   let windSpeed = Math.round(response.data.wind.speed * 3.6);
-
   document.querySelector("#wind-speed").innerHTML = `${windSpeed} km/h`;
 
   //document.querySelector("#temp-c").innerHTML = `<strong>°C</strong>`;
@@ -111,23 +107,25 @@ function changeTempUnit(tempUnit, response) {
     "bold";
 }
 
-function getUrl(unit) {
-  let city = document.querySelector("#chosen-city").innerHTML;
+function getUrl(unit, city) {
+  document.querySelector("#chosen-city").innerHTML = city;
   let apiKey = "ef3ec2d20b89f88c543aa39d79e10d92";
   return `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${apiKey}`;
 }
 
 function changeToCelsius(event) {
   event.preventDefault();
+  let city = document.querySelector("#chosen-city").innerHTML;
   let unit = "metric";
-  let apiUrlNewTemp = getUrl(unit);
+  let apiUrlNewTemp = getUrl(unit, city);
   axios.get(apiUrlNewTemp).then(changeTempUnitToC).catch(getRequestHandleError);
 }
 
 function changeToFahrenheit(event) {
   event.preventDefault();
+  let city = document.querySelector("#chosen-city").innerHTML;
   let unit = "imperial";
-  let apiUrlNewTemp = getUrl(unit);
+  let apiUrlNewTemp = getUrl(unit, city);
   axios.get(apiUrlNewTemp).then(changeTempUnitToF).catch(getRequestHandleError);
 }
 
