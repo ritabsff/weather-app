@@ -37,7 +37,10 @@ function showNewCity(city) {
 function searchForCity(event) {
   event.preventDefault();
   let city = document.querySelector("#city-input").value;
-  showNewCity(city);
+  if (city.match(RegExp("^([a-zA-Z_ ]+?)+$"))) {
+    showNewCity(city);
+  } else {
+  }
 }
 
 //See current city (and temperature)
