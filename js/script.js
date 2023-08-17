@@ -42,13 +42,13 @@ function searchForCity(event) {
 
 //See current city (and temperature)
 function showCurrentCity(response) {
-  let city = response.data[0].name;
+  let city = response.data.name;
   newCity(city);
 }
 
 function showPosition(position) {
   let apiKey = "ef3ec2d20b89f88c543aa39d79e10d92";
-  let apiUrlCurrentCity = `https://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}`;
+  let apiUrlCurrentCity = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}`;
   axios
     .get(apiUrlCurrentCity)
     .then(showCurrentCity)
