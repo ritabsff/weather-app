@@ -37,10 +37,7 @@ function showNewCity(city) {
 function searchForCity(event) {
   event.preventDefault();
   let city = document.querySelector("#city-input").value;
-  if (city.match(RegExp("^([a-zA-Z_ ]+?)+$"))) {
-    showNewCity(city);
-  } else {
-  }
+  showNewCity(city);
 }
 
 //See current city (and temperature)
@@ -75,13 +72,17 @@ function changeTempUnitToF(response) {
 }
 
 function changeTempUnitToC(response) {
-  changeTempUnit(`C`, response);
+  if (response.data.status === "not_found") {
+  } else {
+    document.querySelector("#chosen-city").innerHTML = response.data.city;
+    changeTempUnit(`C`, response);
 
-  let windSpeed = Math.round(response.data.daily[0].wind.speed * 3.6);
-  document.querySelector("#wind-speed").innerHTML = `${windSpeed} km/h`;
+    let windSpeed = Math.round(response.data.daily[0].wind.speed * 3.6);
+    document.querySelector("#wind-speed").innerHTML = `${windSpeed} km/h`;
 
-  //document.querySelector("#temp-c").innerHTML = `<strong>°C</strong>`;
-  //document.querySelector("#temp-f").innerHTML = `°F`;
+    //document.querySelector("#temp-c").innerHTML = `<strong>°C</strong>`;
+    //document.querySelector("#temp-f").innerHTML = `°F`;
+  }
 }
 
 function changeTempUnit(tempUnit, response) {
@@ -117,7 +118,6 @@ function changeTempUnit(tempUnit, response) {
 }
 
 function getUrl(unit, city) {
-  document.querySelector("#chosen-city").innerHTML = city;
   let apiKey = "b60aa360b0014o44b220b7at7697f3da";
   return `https://api.shecodes.io/weather/v1/forecast?query=${city}&units=${unit}&key=${apiKey}`;
 }
