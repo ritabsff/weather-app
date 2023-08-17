@@ -25,7 +25,7 @@ function formatTodaysDate() {
 }
 
 //Search for a specific city
-function newCity(city) {
+function showNewCity(city) {
   let unit = "metric";
   let apiUrlTempCity = getUrl(unit, city);
   axios
@@ -37,13 +37,13 @@ function newCity(city) {
 function searchForCity(event) {
   event.preventDefault();
   let city = document.querySelector("#city-input").value;
-  newCity(city);
+  showNewCity(city);
 }
 
 //See current city (and temperature)
-function showCurrentCity(response) {
+function searchCurrentCity(response) {
   let city = response.data.name;
-  newCity(city);
+  showNewCity(city);
 }
 
 function showPosition(position) {
@@ -51,7 +51,7 @@ function showPosition(position) {
   let apiUrlCurrentCity = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}`;
   axios
     .get(apiUrlCurrentCity)
-    .then(showCurrentCity)
+    .then(searchCurrentCity)
     .catch(getRequestHandleError);
 }
 
