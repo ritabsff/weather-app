@@ -23,6 +23,10 @@ ul {
   text-transform: capitalize;
 }
 
+.description-today::first-letter {
+  text-transform: capitalize;
+}
+
 .weather-emoji {
   width: 50px;
   vertical-align: text-bottom;

@@ -42,13 +42,13 @@ function searchForCity(event) {
 
 //See current city (and temperature)
 function searchCurrentCity(response) {
-  let city = response.data.name;
+  let city = response.data.city;
   showNewCity(city);
 }
 
 function showPosition(position) {
-  let apiKey = "ef3ec2d20b89f88c543aa39d79e10d92";
-  let apiUrlCurrentCity = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}`;
+  let apiKey = "b60aa360b0014o44b220b7at7697f3da";
+  let apiUrlCurrentCity = `https://api.shecodes.io/weather/v1/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}`;
   axios
     .get(apiUrlCurrentCity)
     .then(searchCurrentCity)
@@ -64,7 +64,7 @@ function seeCurrentCity(event) {
 function changeTempUnitToF(response) {
   changeTempUnit(`F`, response);
 
-  let windSpeed = Math.round(response.data.wind.speed);
+  let windSpeed = Math.round(response.data.daily[0].wind.speed);
   document.querySelector("#wind-speed").innerHTML = `${windSpeed} mph`;
 
   //document.querySelector("#temp-c").innerHTML = `°C`;
@@ -74,7 +74,7 @@ function changeTempUnitToF(response) {
 function changeTempUnitToC(response) {
   changeTempUnit(`C`, response);
 
-  let windSpeed = Math.round(response.data.wind.speed * 3.6);
+  let windSpeed = Math.round(response.data.daily[0].wind.speed * 3.6);
   document.querySelector("#wind-speed").innerHTML = `${windSpeed} km/h`;
 
   //document.querySelector("#temp-c").innerHTML = `<strong>°C</strong>`;
@@ -82,21 +82,28 @@ function changeTempUnitToC(response) {
 }
 
 function changeTempUnit(tempUnit, response) {
+  document
+    .querySelector("#weather-emoji-today")
+    .setAttribute("src", `images/${response.data.daily[0].condition.icon}.svg`);
+
+  document.querySelector("#description-today").innerHTML =
+    response.data.daily[0].condition.description;
+
   document.querySelector("#temperature-today").innerHTML = Math.round(
-    response.data.main.temp
+    response.data.daily[0].temperature.day
   );
 
-  let maxTemperature = Math.round(response.data.main.temp_max);
+  let maxTemperature = Math.round(response.data.daily[0].temperature.maximum);
   document.querySelector(
     "#max-temp"
   ).innerHTML = `${maxTemperature}°${tempUnit}`;
 
-  let minTemperature = Math.round(response.data.main.temp_min);
+  let minTemperature = Math.round(response.data.daily[0].temperature.minimum);
   document.querySelector(
     "#min-temp"
   ).innerHTML = `${minTemperature}°${tempUnit}`;
 
-  let humidity = response.data.main.humidity;
+  let humidity = response.data.daily[0].temperature.humidity;
   document.querySelector("#humidity").innerHTML = `${humidity}%`;
 
   document
@@ -108,8 +115,8 @@ function changeTempUnit(tempUnit, response) {
 
 function getUrl(unit, city) {
   document.querySelector("#chosen-city").innerHTML = city;
-  let apiKey = "ef3ec2d20b89f88c543aa39d79e10d92";
-  return `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${apiKey}`;
+  let apiKey = "b60aa360b0014o44b220b7at7697f3da";
+  return `https://api.shecodes.io/weather/v1/forecast?query=${city}&units=${unit}&key=${apiKey}`;
 }
 
 function changeToCelsius(event) {
