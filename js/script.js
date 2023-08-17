@@ -25,26 +25,25 @@ function formatTodaysDate() {
 }
 
 //Search for a specific city
+function newCity(city) {
+  let unit = "metric";
+  let apiUrlTempCity = getUrl(unit, city);
+  axios
+    .get(apiUrlTempCity)
+    .then(changeTempUnitToC)
+    .catch(getRequestHandleError);
+}
+
 function searchForCity(event) {
   event.preventDefault();
   let city = document.querySelector("#city-input").value;
-  let unit = "metric";
-  let apiUrlTempCurrentCity = getUrl(unit, city);
-  axios
-    .get(apiUrlTempCurrentCity)
-    .then(changeTempUnitToC)
-    .catch(getRequestHandleError);
+  newCity(city);
 }
 
 //See current city (and temperature)
 function showCurrentCity(response) {
   let city = response.data[0].name;
-  let unit = "metric";
-  let apiUrlTempCurrentCity = getUrl(unit, city);
-  axios
-    .get(apiUrlTempCurrentCity)
-    .then(changeTempUnitToC)
-    .catch(getRequestHandleError);
+  newCity(city);
 }
 
 function showPosition(position) {
