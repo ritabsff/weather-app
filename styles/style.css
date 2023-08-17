@@ -5,6 +5,7 @@ ul {
   display: block;
   list-style: none;
   padding: 0;
+  margin: auto;
 }
 
 .container {
@@ -12,9 +13,6 @@ ul {
   margin: 0 auto;
   max-width: 600px;
   min-width: 300px;
-}
-.weather-today {
-  padding: 0 0 0 15px;
 }
 
 .city-chosen {
@@ -30,19 +28,24 @@ ul {
   vertical-align: text-bottom;
 }
 
+.weather-today {
+  padding: 0 0 0 15px;
+}
+
+.temp-units {
+  padding: 0 15px 0 2px;
+}
+
 .temperature-today {
   font-size: 65px;
   font-weight: 500;
   line-height: 1;
 }
 
-.max-temp {
-  font-weight: 700;
-}
-
 .temp-unit-space {
   font-size: 16px;
 }
+
 .celsius-unit,
 .fahrenheit-unit {
   color: #2b80f0;
@@ -63,6 +66,10 @@ ul {
   font-size: 14px;
   font-weight: 200;
   line-height: 20px;
+}
+
+.max-temp {
+  font-weight: 700;
 }
 
 .weather-next {
