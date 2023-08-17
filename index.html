@@ -50,19 +50,26 @@
             </div>
           </form>
 
+          <div class="city-chosen" id="chosen-city">Amsterdam</div>
+          <div class="date-today" id="date-today">date today</div>
+          <div class="description-today" id="description-today">Clear</div>
+
           <div class="row mt-3">
-            <div class="col weather-today">
+            <div class="col-auto weather-today">
               <img
                 src="images/sun-symbol.svg"
                 alt="sunny"
                 class="weather-emoji"
               />
-              <span id="temperature-today">10</span>
-              <span class="temp-units">
-                <span class="celsius-unit" id="temp-c">°C</span
-                ><span class="temp-unit-space"> | </span
-                ><span class="fahrenheit-unit" id="temp-f">°F</span>
-              </span>
+              <span class="temperature-today" id="temperature-today">10</span>
+            </div>
+            <div class="col temp-units">
+              <span class="celsius-unit" id="temp-c">°C</span>
+              <span class="temp-unit-space"> | </span>
+              <span class="fahrenheit-unit" id="temp-f">°F</span>
+            </div>
+
+            <div class="col-5">
               <ul class="weather-today-list">
                 <li>
                   <span class="max-temp" id="max-temp">21°C</span> |
@@ -71,12 +78,6 @@
                 <li>Humidity: <span id="humidity">75%</span></li>
                 <li>Wind: <span id="wind-speed">19 km/h</span></li>
               </ul>
-            </div>
-            <div>
-              <div class="col-md-auto city-chosen" id="chosen-city">
-                Amsterdam
-              </div>
-              <div class="date-today" id="date-today">date today</div>
             </div>
           </div>
 

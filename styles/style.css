@@ -13,34 +13,40 @@ ul {
   max-width: 600px;
   min-width: 300px;
 }
-
-.weather-today,
-.city-chosen {
-  font-size: 40px;
-  font-weight: 700;
+.weather-today {
+  padding: 0 0 0 15px;
 }
 
 .city-chosen {
+  font-size: 30px;
+  font-weight: 700;
+  padding: 20px 0 0;
+  line-height: 1;
   text-transform: capitalize;
+}
+
+.weather-emoji {
+  width: 50px;
+  vertical-align: text-bottom;
+}
+
+.temperature-today {
+  font-size: 65px;
+  font-weight: 500;
+  line-height: 1;
 }
 
 .max-temp {
   font-weight: 700;
 }
 
-.weather-emoji {
-  width: 30px;
-}
-
-.temp-units {
-  position: relative;
-  bottom: 16px;
+.temp-unit-space {
+  font-size: 16px;
 }
 .celsius-unit,
 .fahrenheit-unit {
   color: #2b80f0;
   font-size: 16px;
-  font-weight: 500;
 }
 
 .celsius-unit:hover,
@@ -53,13 +59,10 @@ ul {
 
 .weather-today-list,
 .date-today,
-.temp-unit-space {
-  font-size: 16px;
+.description-today {
+  font-size: 14px;
   font-weight: 200;
-}
-
-.date-today {
-  padding: 0 15px;
+  line-height: 20px;
 }
 
 .weather-next {
