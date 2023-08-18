@@ -97,10 +97,7 @@ function showNewCity(city) {
     .get(apiUrlCurrent)
     .then(changeCurrentTempUnitToC)
     .catch(getRequestHandleError);
-  axios
-    .get(apiUrlForecast)
-    .then(changeForecastTempUnitToC)
-    .catch(getRequestHandleError);
+  axios.get(apiUrlForecast).then(displayForecast).catch(getRequestHandleError);
 }
 
 function searchForCity(event) {
@@ -131,54 +128,44 @@ function seeCurrentCity(event) {
   navigator.geolocation.getCurrentPosition(showPosition);
 }
 
-//Change current temperature from one unit to another:
+//Change Current temperature from one unit to another:
 function changeCurrentTempUnitToC(response) {
-  document.querySelector("#temperature-today").innerHTML = Math.round(
-    response.data.temperature.current
-  );
-}
-
-function changeCurrentTempUnitToF(response) {
-  document.querySelector("#temperature-today").innerHTML = Math.round(
-    response.data.temperature.current
-  );
-}
-
-//Change Forecast temperature from one unit to another:
-function changeForecastTempUnitToF(response) {
-  changeTempUnit(`F`, response);
-
-  let windSpeed = Math.round(response.data.daily[0].wind.speed);
-  document.querySelector("#wind-speed").innerHTML = `${windSpeed} mph`;
-
-  //document.querySelector("#temp-c").innerHTML = `°C`;
-  //document.querySelector("#temp-f").innerHTML = `<strong>°F</strong>`;
-}
-
-function changeForecastTempUnitToC(response) {
   if (response.data.status === "not_found") {
     alert("Is the city written correctly?");
   } else {
     document.querySelector("#chosen-city").innerHTML = response.data.city;
     changeTempUnit(`C`, response);
 
-    let windSpeed = Math.round(response.data.daily[0].wind.speed * 3.6);
+    let windSpeed = Math.round(response.data.wind.speed * 3.6);
     document.querySelector("#wind-speed").innerHTML = `${windSpeed} km/h`;
-
-    //document.querySelector("#temp-c").innerHTML = `<strong>°C</strong>`;
-    //document.querySelector("#temp-f").innerHTML = `°F`;
   }
 }
 
+function changeCurrentTempUnitToF(response) {
+  changeTempUnit(`F`, response);
+
+  let windSpeed = Math.round(response.data.wind.speed);
+  document.querySelector("#wind-speed").innerHTML = `${windSpeed} mph`;
+}
+
 function changeTempUnit(tempUnit, response) {
+  console.log(response.data);
   document
     .querySelector("#weather-emoji-today")
-    .setAttribute("src", `images/${response.data.daily[0].condition.icon}.svg`);
+    .setAttribute("src", `images/${response.data.condition.icon}.svg`);
+
+  document.querySelector("#temperature-today").innerHTML = Math.round(
+    response.data.temperature.current
+  );
+
+  document.querySelector("#temperature-feels-like").innerHTML = `${Math.round(
+    response.data.temperature.feels_like
+  )}°${tempUnit}`;
 
   document.querySelector("#description-today").innerHTML =
-    response.data.daily[0].condition.description;
+    response.data.condition.description;
 
-  let humidity = response.data.daily[0].temperature.humidity;
+  let humidity = response.data.temperature.humidity;
   document.querySelector("#humidity").innerHTML = `${humidity}%`;
 
   document
@@ -186,8 +173,6 @@ function changeTempUnit(tempUnit, response) {
     .forEach((elem) => (elem.style.fontWeight = "normal"));
   document.querySelector(`#temp-${tempUnit.toLowerCase()}`).style.fontWeight =
     "bold";
-
-  displayForecast(response);
 }
 
 function changeToCelsius(event) {
@@ -202,7 +187,7 @@ function changeToCelsius(event) {
     .catch(getRequestHandleError);
   axios
     .get(apiUrlForecastTemp)
-    .then(changeForecastTempUnitToC)
+    .then(displayForecast)
     .catch(getRequestHandleError);
 }
 
@@ -218,7 +203,7 @@ function changeToFahrenheit(event) {
     .catch(getRequestHandleError);
   axios
     .get(apiUrlForecastTemp)
-    .then(changeForecastTempUnitToF)
+    .then(displayForecast)
     .catch(getRequestHandleError);
 }
 

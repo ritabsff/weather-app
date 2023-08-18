@@ -39,6 +39,7 @@ ul {
 .weather-emoji {
   width: 50px;
   vertical-align: text-bottom;
+  border-radius: 50%;
 }
 
 .weather-today {
