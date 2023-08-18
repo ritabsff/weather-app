@@ -1,5 +1,25 @@
-//Today's date:
+// functions url api
+function getUrlCurrent(unit, city) {
+  let apiKey = "b60aa360b0014o44b220b7at7697f3da";
+  return `https://api.shecodes.io/weather/v1/current?query=${city}&units=${unit}&key=${apiKey}`;
+}
 
+function getUrlCurrentWithCoord(position) {
+  let apiKey = "b60aa360b0014o44b220b7at7697f3da";
+  return `https://api.shecodes.io/weather/v1/current?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}`;
+}
+
+function getUrlForecast(unit, city) {
+  let apiKey = "b60aa360b0014o44b220b7at7697f3da";
+  return `https://api.shecodes.io/weather/v1/forecast?query=${city}&units=${unit}&key=${apiKey}`;
+}
+
+function getUrlForecastWithCoord(position) {
+  let apiKey = "b60aa360b0014o44b220b7at7697f3da";
+  return `https://api.shecodes.io/weather/v1/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}`;
+}
+
+//Today's date:
 function formatTodaysDate() {
   let today = new Date();
   let days = [
@@ -24,7 +44,6 @@ function formatTodaysDate() {
   return `${day} ${hour}:${minutes}`;
 }
 
-//forecast HTML and search
 function formatForecastDay(timestamp) {
   let date = new Date(timestamp * 1000);
   let day = date.getDay();
@@ -32,6 +51,7 @@ function formatForecastDay(timestamp) {
   return days[day];
 }
 
+//forecast HTML and search
 function displayForecast(response) {
   let forecast = response.data.daily;
 
@@ -71,17 +91,25 @@ function displayForecast(response) {
 //Search for a specific city
 function showNewCity(city) {
   let unit = "metric";
-  let apiUrlTempCity = getUrl(unit, city);
+  let apiUrlForecast = getUrlForecast(unit, city);
+  let apiUrlCurrent = getUrlCurrent(unit, city);
   axios
-    .get(apiUrlTempCity)
-    .then(changeTempUnitToC)
+    .get(apiUrlCurrent)
+    .then(changeCurrentTempUnitToC)
+    .catch(getRequestHandleError);
+  axios
+    .get(apiUrlForecast)
+    .then(changeForecastTempUnitToC)
     .catch(getRequestHandleError);
 }
 
 function searchForCity(event) {
   event.preventDefault();
   let city = document.querySelector("#city-input").value;
-  showNewCity(city);
+  if (city.match(RegExp("^([a-zA-Z]+ ?)+$"))) {
+    showNewCity(city);
+  } else {
+  }
 }
 
 //See current city (and temperature)
@@ -91,8 +119,7 @@ function searchCurrentCity(response) {
 }
 
 function showPosition(position) {
-  let apiKey = "b60aa360b0014o44b220b7at7697f3da";
-  let apiUrlCurrentCity = `https://api.shecodes.io/weather/v1/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}`;
+  let apiUrlCurrentCity = getUrlForecastWithCoord(position);
   axios
     .get(apiUrlCurrentCity)
     .then(searchCurrentCity)
@@ -104,8 +131,21 @@ function seeCurrentCity(event) {
   navigator.geolocation.getCurrentPosition(showPosition);
 }
 
-//Change temperature from one unit to another:
-function changeTempUnitToF(response) {
+//Change current temperature from one unit to another:
+function changeCurrentTempUnitToC(response) {
+  document.querySelector("#temperature-today").innerHTML = Math.round(
+    response.data.temperature.current
+  );
+}
+
+function changeCurrentTempUnitToF(response) {
+  document.querySelector("#temperature-today").innerHTML = Math.round(
+    response.data.temperature.current
+  );
+}
+
+//Change Forecast temperature from one unit to another:
+function changeForecastTempUnitToF(response) {
   changeTempUnit(`F`, response);
 
   let windSpeed = Math.round(response.data.daily[0].wind.speed);
@@ -115,8 +155,9 @@ function changeTempUnitToF(response) {
   //document.querySelector("#temp-f").innerHTML = `<strong>°F</strong>`;
 }
 
-function changeTempUnitToC(response) {
+function changeForecastTempUnitToC(response) {
   if (response.data.status === "not_found") {
+    alert("Is the city written correctly?");
   } else {
     document.querySelector("#chosen-city").innerHTML = response.data.city;
     changeTempUnit(`C`, response);
@@ -137,10 +178,6 @@ function changeTempUnit(tempUnit, response) {
   document.querySelector("#description-today").innerHTML =
     response.data.daily[0].condition.description;
 
-  document.querySelector("#temperature-today").innerHTML = Math.round(
-    response.data.daily[0].temperature.day
-  );
-
   let humidity = response.data.daily[0].temperature.humidity;
   document.querySelector("#humidity").innerHTML = `${humidity}%`;
 
@@ -153,25 +190,36 @@ function changeTempUnit(tempUnit, response) {
   displayForecast(response);
 }
 
-function getUrl(unit, city) {
-  let apiKey = "b60aa360b0014o44b220b7at7697f3da";
-  return `https://api.shecodes.io/weather/v1/forecast?query=${city}&units=${unit}&key=${apiKey}`;
-}
-
 function changeToCelsius(event) {
   event.preventDefault();
   let city = document.querySelector("#chosen-city").innerHTML;
   let unit = "metric";
-  let apiUrlNewTemp = getUrl(unit, city);
-  axios.get(apiUrlNewTemp).then(changeTempUnitToC).catch(getRequestHandleError);
+  let apiUrlForecastTemp = getUrlForecast(unit, city);
+  let apiUrlCurrent = getUrlCurrent(unit, city);
+  axios
+    .get(apiUrlCurrent)
+    .then(changeCurrentTempUnitToC)
+    .catch(getRequestHandleError);
+  axios
+    .get(apiUrlForecastTemp)
+    .then(changeForecastTempUnitToC)
+    .catch(getRequestHandleError);
 }
 
 function changeToFahrenheit(event) {
   event.preventDefault();
   let city = document.querySelector("#chosen-city").innerHTML;
   let unit = "imperial";
-  let apiUrlNewTemp = getUrl(unit, city);
-  axios.get(apiUrlNewTemp).then(changeTempUnitToF).catch(getRequestHandleError);
+  let apiUrlForecastTemp = getUrlForecast(unit, city);
+  let apiUrlCurrent = getUrlCurrent(unit, city);
+  axios
+    .get(apiUrlCurrent)
+    .then(changeCurrentTempUnitToF)
+    .catch(getRequestHandleError);
+  axios
+    .get(apiUrlForecastTemp)
+    .then(changeForecastTempUnitToF)
+    .catch(getRequestHandleError);
 }
 
 function getRequestHandleError(error) {
