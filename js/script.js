@@ -24,6 +24,50 @@ function formatTodaysDate() {
   return `${day} ${hour}:${minutes}`;
 }
 
+//forecast HTML and search
+function formatForecastDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days[day];
+}
+
+function displayForecast(response) {
+  let forecast = response.data.daily;
+
+  let forecastElement = document.querySelector("#forecast");
+  let forecastHTML = `<div class="row">`;
+
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `<div class="col">
+        <div class="weather-forecast-date">${formatForecastDay(
+          forecastDay.time
+        )}</div>
+        <div class="card weather-emoji-card">
+          <img src="images/${forecastDay.condition.icon}.svg" alt="${
+          forecastDay.condition.icon
+        }" />
+        </div>
+        <div class="weather-forecast-temperature">
+          <span class="weather-forecast-temperature-max"
+          ><strong>${Math.round(
+            forecastDay.temperature.maximum
+          )}°</strong></span
+          >
+          | <span class="weather-forecast-temperature-min">${Math.round(
+            forecastDay.temperature.minimum
+          )}°</span>
+        </div>
+      </div>`;
+    }
+  });
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
+
 //Search for a specific city
 function showNewCity(city) {
   let unit = "metric";
@@ -115,6 +159,8 @@ function changeTempUnit(tempUnit, response) {
     .forEach((elem) => (elem.style.fontWeight = "normal"));
   document.querySelector(`#temp-${tempUnit.toLowerCase()}`).style.fontWeight =
     "bold";
+
+  displayForecast(response);
 }
 
 function getUrl(unit, city) {

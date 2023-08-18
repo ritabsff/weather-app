@@ -12,7 +12,7 @@ ul {
   display: block;
   margin: 0 auto;
   max-width: 600px;
-  min-width: 300px;
+  min-width: 308px;
 }
 
 .city-chosen {
@@ -21,6 +21,15 @@ ul {
   padding: 20px 0 0;
   line-height: 1;
   text-transform: capitalize;
+}
+
+.weather-today-list,
+.date-today,
+.description-today {
+  font-size: 14px;
+  font-weight: 200;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .description-today::first-letter {
@@ -38,6 +47,7 @@ ul {
 
 .temp-units {
   padding: 0 15px 0 2px;
+  min-width: 65px;
 }
 
 .temperature-today {
@@ -64,31 +74,28 @@ ul {
   cursor: pointer;
 }
 
-.weather-today-list,
-.date-today,
-.description-today {
-  font-size: 14px;
-  font-weight: 200;
-  line-height: 20px;
-}
-
 .max-temp {
   font-weight: 700;
 }
 
-.weather-next {
-  font-size: 12px;
+.weather-forecast {
+  font-size: 11px;
   text-align: center;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .weather-emoji-card {
   border: none;
   width: 40px;
-  display: block;
   margin: 0 auto;
   border: 1px solid grey;
   padding: 3px;
   border-radius: 50%;
+}
+
+.weather-forecast-temperature {
+  padding: 0 0 10px 0;
+  min-width: 50px;
 }
 
 .open-source {
