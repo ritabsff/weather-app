@@ -141,16 +141,6 @@ function changeTempUnit(tempUnit, response) {
     response.data.daily[0].temperature.day
   );
 
-  let maxTemperature = Math.round(response.data.daily[0].temperature.maximum);
-  document.querySelector(
-    "#max-temp"
-  ).innerHTML = `${maxTemperature}°${tempUnit}`;
-
-  let minTemperature = Math.round(response.data.daily[0].temperature.minimum);
-  document.querySelector(
-    "#min-temp"
-  ).innerHTML = `${minTemperature}°${tempUnit}`;
-
   let humidity = response.data.daily[0].temperature.humidity;
   document.querySelector("#humidity").innerHTML = `${humidity}%`;
 
