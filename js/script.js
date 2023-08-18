@@ -19,6 +19,10 @@ function getUrlForecastWithCoord(position) {
   return `https://api.shecodes.io/weather/v1/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}`;
 }
 
+function getRequestHandleError(error) {
+  alert(error);
+}
+
 //Today's date:
 function formatTodaysDate() {
   let today = new Date();
@@ -49,6 +53,52 @@ function formatForecastDay(timestamp) {
   let day = date.getDay();
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return days[day];
+}
+
+//Change Current temperature from one unit to another:
+function changeTempUnit(tempUnit, response) {
+  document
+    .querySelector("#weather-emoji-today")
+    .setAttribute("src", `images/${response.data.condition.icon}.svg`);
+
+  document.querySelector("#temperature-today").innerHTML = Math.round(
+    response.data.temperature.current
+  );
+
+  document.querySelector("#temperature-feels-like").innerHTML = `${Math.round(
+    response.data.temperature.feels_like
+  )}°${tempUnit}`;
+
+  document.querySelector("#description-today").innerHTML =
+    response.data.condition.description;
+
+  let humidity = response.data.temperature.humidity;
+  document.querySelector("#humidity").innerHTML = `${humidity}%`;
+
+  document
+    .querySelectorAll(".temp-units span")
+    .forEach((elem) => (elem.style.fontWeight = "normal"));
+  document.querySelector(`#temp-${tempUnit.toLowerCase()}`).style.fontWeight =
+    "bold";
+}
+
+function changeCurrentTempUnitToC(response) {
+  if (response.data.status === "not_found") {
+    alert("Is the city written correctly?");
+  } else {
+    document.querySelector("#chosen-city").innerHTML = response.data.city;
+    changeTempUnit(`C`, response);
+
+    let windSpeed = Math.round(response.data.wind.speed * 3.6);
+    document.querySelector("#wind-speed").innerHTML = `${windSpeed} km/h`;
+  }
+}
+
+function changeCurrentTempUnitToF(response) {
+  changeTempUnit(`F`, response);
+
+  let windSpeed = Math.round(response.data.wind.speed);
+  document.querySelector("#wind-speed").innerHTML = `${windSpeed} mph`;
 }
 
 //forecast HTML and search
@@ -128,53 +178,7 @@ function seeCurrentCity(event) {
   navigator.geolocation.getCurrentPosition(showPosition);
 }
 
-//Change Current temperature from one unit to another:
-function changeCurrentTempUnitToC(response) {
-  if (response.data.status === "not_found") {
-    alert("Is the city written correctly?");
-  } else {
-    document.querySelector("#chosen-city").innerHTML = response.data.city;
-    changeTempUnit(`C`, response);
-
-    let windSpeed = Math.round(response.data.wind.speed * 3.6);
-    document.querySelector("#wind-speed").innerHTML = `${windSpeed} km/h`;
-  }
-}
-
-function changeCurrentTempUnitToF(response) {
-  changeTempUnit(`F`, response);
-
-  let windSpeed = Math.round(response.data.wind.speed);
-  document.querySelector("#wind-speed").innerHTML = `${windSpeed} mph`;
-}
-
-function changeTempUnit(tempUnit, response) {
-  console.log(response.data);
-  document
-    .querySelector("#weather-emoji-today")
-    .setAttribute("src", `images/${response.data.condition.icon}.svg`);
-
-  document.querySelector("#temperature-today").innerHTML = Math.round(
-    response.data.temperature.current
-  );
-
-  document.querySelector("#temperature-feels-like").innerHTML = `${Math.round(
-    response.data.temperature.feels_like
-  )}°${tempUnit}`;
-
-  document.querySelector("#description-today").innerHTML =
-    response.data.condition.description;
-
-  let humidity = response.data.temperature.humidity;
-  document.querySelector("#humidity").innerHTML = `${humidity}%`;
-
-  document
-    .querySelectorAll(".temp-units span")
-    .forEach((elem) => (elem.style.fontWeight = "normal"));
-  document.querySelector(`#temp-${tempUnit.toLowerCase()}`).style.fontWeight =
-    "bold";
-}
-
+//Change to celsius or fahrenheit
 function changeToCelsius(event) {
   event.preventDefault();
   let city = document.querySelector("#chosen-city").innerHTML;
@@ -205,10 +209,6 @@ function changeToFahrenheit(event) {
     .get(apiUrlForecastTemp)
     .then(displayForecast)
     .catch(getRequestHandleError);
-}
-
-function getRequestHandleError(error) {
-  alert(error);
 }
 
 //inputs
